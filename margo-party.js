@@ -42,7 +42,7 @@ function generateStars() {
     var destination = getDestination(x, y);
 
     var star = draw.rect(2, 2).cx(x).cy(y).attr({ fill: 'white' });
-    star.animate(2000, '-').move(destination[0], destination[1]);
+    star.animate(2000, '-').move(destination[0], destination[1]).loop();
   }
 }
 
