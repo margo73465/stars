@@ -46,7 +46,6 @@ function getDestination(point) {
 function generateRandomPoint() {
   var x = Math.random() * width;
   var y = Math.random() * height;
-
   return { x: x, y: y};
 }
 
@@ -54,8 +53,15 @@ function createStar() {
   var star = generateRandomPoint();
   var destination = getDestination(star);
 
-  var star = draw.rect(2, 2).cx(star.x).cy(star.y).attr({ fill: 'white' });
-  star.animate(2000, '-').move(destination.x, destination.y);
+  var star = draw.circle(3)
+    .cx(star.x)
+    .cy(star.y)
+    .attr({ fill: 'white' })
+    .opacity(0.4);
+
+  star.animate(2000, '-')
+    .move(destination.x, destination.y)
+    .opacity(1);
 }
 
 function initialize() {
