@@ -2,9 +2,21 @@ var height = window.innerHeight;
 var width = window.innerWidth;
 var centerX = width / 2;
 var centerY = height / 2;
-var numStars = 500;
+var numStars = 100;
 
 var draw = SVG('drawing').size(width, height);
+
+function convertToPolar(x, y) {
+  r = Math.sqrt(x * x + y * y);
+  theta = Math.atan2(y, x);
+  return [r, theta];
+}
+
+function convertToCartesian(r, theta) {
+  x = r * Math.cos(theta);
+  y = r * Math.sin(theta);
+  return [x, y]
+}
 
 function getDestination(x, y) {
   var destinationX, destinationY;
@@ -12,24 +24,12 @@ function getDestination(x, y) {
   y = -(y - centerY);
   x = x - centerX;
 
-  if ( y > Math.abs(x) ) { // top
-    destinationY = centerY;
-    destinationX = (x * centerY) / y;
-  } else if ( -x > Math.abs(y) ) { // left
-    destinationX = -centerX;
-    destinationY = (y / x) * (-centerX);
-  } else if ( -y > Math.abs(x) ) { // bottom
-    destinationY = -centerY;
-    destinationX = (x * (-centerY)) / y;
-  } else if ( x > Math.abs(y) ) {
-    destinationX = centerX;
-    destinationY = (y / x) * centerX;
-  } else {
-    console.log('we gotta problem');
-  }
+  polar = convertToPolar(x, y);
+  destinationPolar = [polar[0] + 600, polar[1]];
+  destination = convertToCartesian(destinationPolar[0], destinationPolar[1]);
 
-  destinationX = destinationX + centerX;
-  destinationY = -destinationY + centerY;
+  destinationX = destination[0] + centerX;
+  destinationY = -destination[1] + centerY;
 
   return [destinationX, destinationY];
 }
