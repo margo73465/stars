@@ -2,6 +2,7 @@ var height = window.innerHeight;
 var width = window.innerWidth;
 var centerX = width / 2;
 var centerY = height / 2;
+var moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
 
 var draw = SVG('drawing').size(width, height);
 
@@ -34,7 +35,7 @@ function getDestination(point) {
   polarPoint = cartesianToPolar(cartesianPoint);
 
   destinationPolar = {
-    r: polarPoint.r + 600,
+    r: polarPoint.r + moveDistance,
     theta: polarPoint.theta
   };
 
@@ -50,12 +51,12 @@ function generateRandomPoint() {
 }
 
 function createStar() {
-  var star = generateRandomPoint();
-  var destination = getDestination(star);
+  var point = generateRandomPoint();
+  var destination = getDestination(point);
 
   var star = draw.circle(3)
-    .cx(star.x)
-    .cy(star.y)
+    .cx(point.x)
+    .cy(point.y)
     .attr({ fill: 'white' })
     .opacity(0.4);
 
