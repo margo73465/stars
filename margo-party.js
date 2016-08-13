@@ -54,7 +54,7 @@ function createStar() {
   var point = generateRandomPoint();
   var destination = getDestination(point);
 
-  var star = draw.circle(3)
+  var star = draw.circle(5)
     .cx(point.x)
     .cy(point.y)
     .attr({ fill: 'white' })
@@ -65,8 +65,19 @@ function createStar() {
     .opacity(1);
 }
 
-function initialize() {
+function startSound() {
+  var ufo = document.getElementById('ufo-sounds');
+  ufo.loop = true;
+  ufo.autoplay = true;
+}
+
+function startStars() {
   window.setInterval(createStar, 10);
+}
+
+function initialize() {
+  startSound();
+  startStars();
 }
 
 initialize();
