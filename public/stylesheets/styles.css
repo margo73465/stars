@@ -1,0 +1,27 @@
+body {
+  background-color: black;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-family: 'Press Start 2P';
+  font-size: 36px;
+  color: white;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+
+  animation-duration: 3s;
+  animation-name: appear;
+}
+
+@keyframes appear {
+  from {
+    font-size: 0;
+  }
+
+  to {
+    font-size: 36px;
+  }
+}

@@ -2,44 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <style>
-      body {
-        background-color: black;
-        display: flex;
-        align-items: center;
-      }
-
-      .title {
-        font-family: 'Press Start 2P';
-        font-size: 36px;
-        color: white;
-        position: absolute;
-        width: 100%;
-        text-align: center;
-
-        animation-duration: 3s;
-        animation-name: appear;
-      }
-
-      @keyframes appear {
-        from {
-          font-size: 0;
-        }
-
-        to {
-          font-size: 36px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
     <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
   </head>
   <body>
     <audio id="ufo-sounds">
-      <source src="ufoFlying.mp3" type="audio/mpeg">
+      <source src="./ufoFlying.mp3" type="audio/mpeg">
     </audio>
     <div class="title">Margo Smith</div>
     <div id="drawing"></div>
-    <script type="text/javascript" src="svg.js"></script>
-    <script type="text/javascript" src="margo-party.js"></script>
+    <script type="text/javascript" src="js/svg.js"></script>
+    <script type="text/javascript" src="js/margo-party.js"></script>
   </body>
 </html>
