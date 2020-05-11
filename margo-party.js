@@ -54,29 +54,22 @@ function createStar() {
   var point = generateRandomPoint();
   var destination = getDestination(point);
 
-  var star = draw.circle(5)
+  var star = draw.circle(2)
     .cx(point.x)
     .cy(point.y)
     .attr({ fill: 'white' })
-    .opacity(0.4);
+    .opacity(1);
 
   star.animate(2000, '-')
     .move(destination.x, destination.y)
     .opacity(1);
 }
 
-function startSound() {
-  var ufo = document.getElementById('ufo-sounds');
-  ufo.loop = true;
-  ufo.autoplay = true;
-}
-
 function startStars() {
-  window.setInterval(createStar, 10);
+  window.setInterval(createStar, 5);
 }
 
 function initialize() {
-  startSound();
   startStars();
 }
 
