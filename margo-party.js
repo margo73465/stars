@@ -4,7 +4,13 @@ var centerX = width / 2;
 var centerY = height / 2;
 var moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
 
-var draw = SVG('drawing').size(width, height);
+var star_maker;
+var svg = document.getElementsByTagName('svg')[0];
+svg.setAttribute("width", width);
+svg.setAttribute("height", height);
+svg.setAttribute("onclick", "clearInterval(star_maker)");
+
+star_maker = setInterval(createStar, 20);
 
 function svgToCartesian(point) {
   y = -(point.y - centerY);
@@ -47,30 +53,24 @@ function getDestination(point) {
 function generateRandomPoint() {
   var x = Math.random() * width;
   var y = Math.random() * height;
-  return { x: x, y: y};
+  return { x: x, y: y };
 }
 
 function createStar() {
   var point = generateRandomPoint();
+
+  var star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  star.setAttribute("cx", point.x);
+  star.setAttribute("cy", point.y);
+  star.setAttribute("class", "star");
+
+  svg.appendChild(star);
+
+  window.setTimeout(() => animateStar(star, point), 10);
+}
+
+function animateStar(star, point) {
   var destination = getDestination(point);
-
-  var star = draw.circle(2)
-    .cx(point.x)
-    .cy(point.y)
-    .attr({ fill: 'white' })
-    .opacity(1);
-
-  star.animate(2000, '-')
-    .move(destination.x, destination.y)
-    .opacity(1);
+  star.style.transform = 
+    "translate(" + destination.x + "px, " + destination.y + "px)";
 }
-
-function startStars() {
-  window.setInterval(createStar, 5);
-}
-
-function initialize() {
-  startStars();
-}
-
-initialize();
