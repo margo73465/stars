@@ -5,7 +5,7 @@ var centerY = height / 2;
 var moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
 
 var star_maker;
-var svg = document.getElementsByTagName('svg')[0];
+var svg = document.getElementById('svg');
 svg.setAttribute("width", width);
 svg.setAttribute("height", height);
 svg.setAttribute("onclick", "clearInterval(star_maker)");
@@ -60,8 +60,11 @@ function createStar() {
   var point = generateRandomPoint();
 
   var star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  star.setAttribute("r", 2);
   star.setAttribute("cx", point.x);
   star.setAttribute("cy", point.y);
+  star.style.transition = "transform 2s";
+  star.style.fill = "white";
   star.setAttribute("class", "star");
 
   svg.appendChild(star);

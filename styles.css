@@ -2,9 +2,3 @@ body {
   margin: 0;
   background-color: black;
 }
-
-.star {
-  r: 2px;
-  fill: white;
-  transition: transform 2s;
-}
