@@ -60,38 +60,18 @@ function animateStar(star, point) {
 }
 
 function svgToCartesian(point) {
-  let x, y;
-
-  if ( point.x > centerX ) {
-    x = point.x - centerX;
-  } else {
-    x = -(centerX - point.x);
-  }
-
-  if ( point.y > centerY ) {
-    y = -(point.y - centerY);
-  } else {
-    y = centerY - point.y;
-  }
-
+  const x = point.x - centerX;
+  const y = point.y > centerY ?
+    -(point.y - centerY) : 
+    centerY - point.y;
   return { x: x, y: y };
 }
 
 function cartesianToSvg(point) {
-  let x, y;
-
-  if ( point.x < 0 ) {
-    x = centerX + point.x;
-  } else {
-    x = centerX + point.x;
-  }
-
-  if ( point.y < 0 ) {
-    y = -point.y + centerY;
-  } else {
-    y = centerY - point.y;
-  }
-
+  const x = centerX + point.x;
+  const y = point.y < 0 ?
+    -point.y + centerY :
+    centerY - point.y;
   return { x: x, y: y };
 }
 
