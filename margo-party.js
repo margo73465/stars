@@ -13,15 +13,15 @@ svg.setAttribute("onclick", "clearInterval(star_maker)");
 star_maker = setInterval(createStar, 20);
 
 function createStar() {
-  const point = generateRandomPoint();
-  const star = drawStar(point);
+  const point = generateRandomPolarPoint();
+  const star = drawStar(polarToSvg(point));
   window.setTimeout(() => animateStar(star, point), 10);
 }
 
-function generateRandomPoint() {
-  const x = Math.random() * width;
-  const y = Math.random() * height;
-  return { x: x, y: y };
+function generateRandomPolarPoint() {
+  const r = Math.random() * 200;
+  const theta = Math.random() * 2 * Math.PI;
+  return { r, theta };
 }
 
 function drawStar(point) {
@@ -35,21 +35,20 @@ function drawStar(point) {
   return star;
 }
 
-function getTransform(point) {
-  const cartesianPoint = svgToCartesian(point);
-  const polarPoint = cartesianToPolar(cartesianPoint);
-
+function getTransform(polarPoint) {
   destinationPolar = {
     r: polarPoint.r + moveDistance,
     theta: polarPoint.theta
   };
 
-  const destinationCartesian = polarToCartesian(destinationPolar);
-  const destination = cartesianToSvg(destinationCartesian);
+  const point = polarToSvg(polarPoint);
+  const destination = polarToSvg(destinationPolar);
+
   const transform = {
     x: destination.x - point.x,
     y: destination.y - point.y
   }
+
   return transform;
 }
 
@@ -57,6 +56,14 @@ function animateStar(star, point) {
   const transform = getTransform(point);
   const translateString = "translate(" + transform.x + "px, " + transform.y + "px)";
   star.style.transform = translateString;
+}
+
+function svgToPolar(point) {
+  return cartesianToPolar(svgToCartesian(point));
+}
+
+function polarToSvg(point) {
+  return cartesianToSvg(polarToCartesian(point));
 }
 
 function svgToCartesian(point) {
