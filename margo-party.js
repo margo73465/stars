@@ -1,79 +1,108 @@
-var height = window.innerHeight;
-var width = window.innerWidth;
-var centerX = width / 2;
-var centerY = height / 2;
-var moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+const height = window.innerHeight;
+const width = window.innerWidth;
+const centerX = width / 2;
+const centerY = height / 2;
+const moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
 
-var star_maker;
-var svg = document.getElementById('svg');
+let star_maker;
+const svg = document.getElementById('svg');
 svg.setAttribute("width", width);
 svg.setAttribute("height", height);
 svg.setAttribute("onclick", "clearInterval(star_maker)");
 
 star_maker = setInterval(createStar, 20);
 
-function svgToCartesian(point) {
-  y = -(point.y - centerY);
-  x = point.x - centerX;
+function createStar() {
+  const point = generateRandomPoint();
+  const star = drawStar(point);
+  window.setTimeout(() => animateStar(star, point), 10);
+}
+
+function generateRandomPoint() {
+  const x = Math.random() * width;
+  const y = Math.random() * height;
   return { x: x, y: y };
 }
 
-function cartesianToSvg(point) {
-  x = point.x + centerX;
-  y = -point.y + centerY;
-  return { x: x, y: y };
+function drawStar(point) {
+  const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  star.setAttribute("r", 2);
+  star.setAttribute("cx", point.x);
+  star.setAttribute("cy", point.y);
+  star.style.fill = "white";
+  star.setAttribute("class", "star");
+  svg.appendChild(star);
+  return star;
 }
 
-function cartesianToPolar(point) {
-  r = Math.sqrt(point.x * point.x + point.y * point.y);
-  theta = Math.atan2(point.y, point.x);
-  return { r: r, theta: theta };
-}
-
-function polarToCartesian(polarPoint) {
-  x = polarPoint.r * Math.cos(polarPoint.theta);
-  y = polarPoint.r * Math.sin(polarPoint.theta);
-  return { x: x, y: y };
-}
-
-function getDestination(point) {
-  cartesianPoint = svgToCartesian(point);
-  polarPoint = cartesianToPolar(cartesianPoint);
+function getTransform(point) {
+  const cartesianPoint = svgToCartesian(point);
+  const polarPoint = cartesianToPolar(cartesianPoint);
 
   destinationPolar = {
     r: polarPoint.r + moveDistance,
     theta: polarPoint.theta
   };
 
-  destinationCartesian = polarToCartesian(destinationPolar);
-  destination = cartesianToSvg(destinationCartesian);
-  return destination;
-}
-
-function generateRandomPoint() {
-  var x = Math.random() * width;
-  var y = Math.random() * height;
-  return { x: x, y: y };
-}
-
-function createStar() {
-  var point = generateRandomPoint();
-
-  var star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  star.setAttribute("r", 2);
-  star.setAttribute("cx", point.x);
-  star.setAttribute("cy", point.y);
-  star.style.transition = "transform 2s";
-  star.style.fill = "white";
-  star.setAttribute("class", "star");
-
-  svg.appendChild(star);
-
-  window.setTimeout(() => animateStar(star, point), 10);
+  const destinationCartesian = polarToCartesian(destinationPolar);
+  const destination = cartesianToSvg(destinationCartesian);
+  const transform = {
+    x: destination.x - point.x,
+    y: destination.y - point.y
+  }
+  return transform;
 }
 
 function animateStar(star, point) {
-  var destination = getDestination(point);
-  star.style.transform = 
-    "translate(" + destination.x + "px, " + destination.y + "px)";
+  const transform = getTransform(point);
+  const translateString = "translate(" + transform.x + "px, " + transform.y + "px)";
+  star.style.transform = translateString;
+}
+
+function svgToCartesian(point) {
+  let x, y;
+
+  if ( point.x > centerX ) {
+    x = point.x - centerX;
+  } else {
+    x = -(centerX - point.x);
+  }
+
+  if ( point.y > centerY ) {
+    y = -(point.y - centerY);
+  } else {
+    y = centerY - point.y;
+  }
+
+  return { x: x, y: y };
+}
+
+function cartesianToSvg(point) {
+  let x, y;
+
+  if ( point.x < 0 ) {
+    x = centerX + point.x;
+  } else {
+    x = centerX + point.x;
+  }
+
+  if ( point.y < 0 ) {
+    y = -point.y + centerY;
+  } else {
+    y = centerY - point.y;
+  }
+
+  return { x: x, y: y };
+}
+
+function cartesianToPolar(point) {
+  const r = Math.sqrt(point.x * point.x + point.y * point.y);
+  const theta = Math.atan2(point.y, point.x);
+  return { r: r, theta: theta };
+}
+
+function polarToCartesian(polarPoint) {
+  const x = polarPoint.r * Math.cos(polarPoint.theta);
+  const y = polarPoint.r * Math.sin(polarPoint.theta);
+  return { x: x, y: y };
 }
