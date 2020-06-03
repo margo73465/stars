@@ -1,16 +1,23 @@
+// Constants
 const height = window.innerHeight;
 const width = window.innerWidth;
+
+// Settings
+const interval = 20;
+const innerRadius = 200;
+
+// Derived values
 const centerX = width / 2;
 const centerY = height / 2;
 const moveDistance = Math.sqrt(centerX * centerX + centerY * centerY);
 
-let star_maker;
+let starMaker;
 const svg = document.getElementById('svg');
 svg.setAttribute("width", width);
 svg.setAttribute("height", height);
-svg.setAttribute("onclick", "clearInterval(star_maker)");
+svg.setAttribute("onclick", "clearInterval(starMaker)");
 
-star_maker = setInterval(createStar, 20);
+starMaker = setInterval(createStar, interval);
 
 function createStar() {
   const point = generateRandomPolarPoint();
@@ -19,7 +26,7 @@ function createStar() {
 }
 
 function generateRandomPolarPoint() {
-  const r = Math.random() * 200;
+  const r = Math.random() * innerRadius;
   const theta = Math.random() * 2 * Math.PI;
   return { r, theta };
 }
@@ -54,9 +61,12 @@ function getTransform(polarPoint) {
 
 function animateStar(star, point) {
   const transform = getTransform(point);
-  const translateString = "translate(" + transform.x + "px, " + transform.y + "px)";
-  star.style.transform = translateString;
+  star.style.transform = "translate(" + transform.x + "px, " + transform.y + "px)";
 }
+
+/////////////////////////////////////////////
+// Utility coordinate conversion functions //
+/////////////////////////////////////////////
 
 function svgToPolar(point) {
   return cartesianToPolar(svgToCartesian(point));
